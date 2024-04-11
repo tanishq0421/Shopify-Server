@@ -1,7 +1,7 @@
 export enum ErrorType {
   GENERAL = "General",
   VALIDATION = "Validation",
-  NETWORK="Network",
+  NETWORK = "Network",
   API = "API",
   NOT_FOUND = "Not Found",
 }
