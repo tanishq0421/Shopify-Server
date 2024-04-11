@@ -1,9 +1,10 @@
-import { Request, Response } from 'express';
-import { ShopifyOrdersService } from '../services/ordersService';
-import { EntityNotFoundError } from '../errorhandler/entityNotFound.errorhandler';
-import { ResourceNotFoundError } from '../errorhandler/resourceNotFound.errorhandler';
-import { ApplicationError } from '../errorhandler/application.errorhandler';
-import { InvalidEntityError } from '../errorhandler/invalidEntityErrorHandler';
+import { Request, Response } from "express";
+import { ShopifyOrdersService } from "../services/ordersService";
+import { EntityNotFoundError } from "../errorhandler/entityNotFound.errorhandler";
+import { ResourceNotFoundError } from "../errorhandler/resourceNotFound.errorhandler";
+import { ApplicationError } from "../errorhandler/application.errorhandler";
+import { InvalidEntityError } from "../errorhandler/invalidEntityErrorHandler";
+import { Order } from "types/order.types";
 
 export class OrderController {
   private readonly orderService: ShopifyOrdersService;
@@ -14,19 +15,38 @@ export class OrderController {
 
   async getAllOrders(req: Request, res: Response) {
     try {
-      const orders = await this.orderService.getAllOrders();
-      if (!orders || orders.length === 0) {
-        throw new ResourceNotFoundError('No orders found');
+      const phoneNumber: string | undefined = req.query.phoneNumber?.toString();
+
+      if (!phoneNumber) {
+        return res.status(400).json({ error: "Phone number is required" });
       }
-      res.status(200).json(orders);
+
+      const orders: Order[] | null = await this.orderService.getAllOrders();
+
+      if (!orders || orders.length === 0) {
+        throw new ResourceNotFoundError("No orders found");
+      }
+
+      const filteredOrders: Order[] = orders.filter(
+        (order) => order.phone === phoneNumber
+      );
+
+      if (filteredOrders.length === 0) {
+        throw new ResourceNotFoundError(
+          "No orders found for the provided phone number"
+        );
+      }
+
+      res.status(200).json(filteredOrders);
     } catch (error: any) {
-      console.error('Error fetching all orders:', error.message);
+      console.error("Error fetching orders:", error.message);
+
       if (error instanceof ResourceNotFoundError) {
         res.status(404).json({ error: error.message });
       } else if (error instanceof ApplicationError) {
         res.status(500).json({ error: error.message });
       } else {
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: "Internal Server Error" });
       }
     }
   }
@@ -35,7 +55,7 @@ export class OrderController {
     const orderId: number = parseInt(req.params.orderId);
 
     if (isNaN(orderId) || orderId <= 0) {
-      return res.status(400).json({ error: 'Invalid Order ID' });
+      return res.status(400).json({ error: "Invalid Order ID" });
     }
 
     try {
@@ -53,7 +73,7 @@ export class OrderController {
       } else if (error instanceof ApplicationError) {
         res.status(500).json({ error: error.message });
       } else {
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: "Internal Server Error" });
       }
     }
   }
@@ -62,12 +82,14 @@ export class OrderController {
     const orderId: number = parseInt(req.params.orderId);
 
     if (isNaN(orderId) || orderId <= 0) {
-      return res.status(400).json({ error: 'Invalid Order ID' });
+      return res.status(400).json({ error: "Invalid Order ID" });
     }
 
     try {
       await this.orderService.cancelOrder(orderId);
-      res.status(200).json({ message: `Order with ID ${orderId} has been successfully cancelled` });
+      res.status(200).json({
+        message: `Order with ID ${orderId} has been successfully cancelled`,
+      });
     } catch (error: any) {
       console.error(`Error cancelling order ${orderId}:`, error.message);
       if (error instanceof EntityNotFoundError) {
@@ -77,7 +99,7 @@ export class OrderController {
       } else if (error instanceof ApplicationError) {
         res.status(500).json({ error: error.message });
       } else {
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: "Internal Server Error" });
       }
     }
   }
