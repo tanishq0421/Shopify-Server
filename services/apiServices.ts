@@ -42,19 +42,19 @@ export class ShopifyClient {
     }
   }
 
-  async get<T>(path: string): Promise<T> {
-    return this.handleRequest<T>(this.client.get<T>(path));
+  async get<T>(path: string, params?: Record<string, any>): Promise<T> {
+    return this.handleRequest<T>(this.client.get<T>(path, { params }));
   }
 
-  async post<T>(path: string, data: any): Promise<T> {
-    return this.handleRequest<T>(this.client.post<T>(path, data));
+  async post<T>(path: string, data?: any, params?: Record<string, any>): Promise<T> {
+    return this.handleRequest<T>(this.client.post<T>(path, data, { params }));
   }
 
-  async put<T>(path: string, data: any): Promise<T> {
-    return this.handleRequest<T>(this.client.put<T>(path, data));
+  async put<T>(path: string, data?: any, params?: Record<string, any>): Promise<T> {
+    return this.handleRequest<T>(this.client.put<T>(path, data, { params }));
   }
 
-  async delete<T>(path: string): Promise<T> {
-    return this.handleRequest<T>(this.client.delete<T>(path));
+  async delete<T>(path: string, params?: Record<string, any>): Promise<T> {
+    return this.handleRequest<T>(this.client.delete<T>(path, { params }));
   }
 }

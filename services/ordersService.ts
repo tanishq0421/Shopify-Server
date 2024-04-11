@@ -11,9 +11,9 @@ export class ShopifyOrdersService {
     this.shopifyClient = shopifyClient;
   }
 
-  async getAllOrders(): Promise<Order[] | null> {
+  async getAllOrders(params?: Record<string, any>): Promise<Order[] | null> {
     try {
-      const orders = await this.shopifyClient.get<any[]>('/orders.json');
+      const orders = await this.shopifyClient.get<Order[]>('/orders.json');
       if(!orders){
         throw new ResourceNotFoundError('Orders');
       }
