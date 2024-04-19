@@ -46,7 +46,6 @@ export class OrdersService {
       const order = await this.shopifyClient.get(
         `/orders/${orderId}.json`
       );
-      console.log(order, "order")
       if (!order) {
         throw new ResourceNotFoundError(`Order with ID ${orderId}`);
       }
@@ -65,7 +64,7 @@ export class OrdersService {
       if (!orderId || isNaN(orderId) || orderId <= 0) {
         throw new InvalidEntityError("Invalid order ID.");
       }
-      await this.shopifyClient.delete<void>(`/orders/${orderId}.json`);
+      await this.shopifyClient.get<void>(`/orders/${orderId}.json`);
     } catch (error: any) {
       console.error(`Error canceling order with ID ${orderId}:`, error.message);
       throw new ShopifyAPIError("Failed to cancel order.");
