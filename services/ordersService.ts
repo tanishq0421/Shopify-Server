@@ -7,13 +7,19 @@ import { ShopifyAPIError } from "./../errorhandler/shopifyAPI.errorhandler";
 export class OrdersService {
   private readonly shopifyClient: ShopifyClient;
 
-  constructor(shopifyClient: ShopifyClient) {
-    this.shopifyClient = shopifyClient;
+  constructor() {
+    this.shopifyClient = new ShopifyClient(
+      `${process.env.SHOPIFY_APP_NAME}`,
+      `${process.env.SHOPIFY_APP_ACCESS_TOKEN}`
+    );
   }
 
-  async getAllOrders(params?: Record<string, any>): Promise<Order[] | null> {
+  async getAllOrders(): Promise<Order[] | null> {
     try {
-      const orders = await this.shopifyClient.get<Order[]>("/orders.json");
+      const response = await this.shopifyClient.get<{ orders: Order[] }>(
+        "/orders.json"
+      );
+      const orders = response.orders;
       if (!orders) {
         throw new ResourceNotFoundError("Orders");
       }
@@ -37,9 +43,10 @@ export class OrdersService {
       if (!orderId || isNaN(orderId) || orderId <= 0) {
         throw new InvalidEntityError("Invalid order ID.");
       }
-      const order = await this.shopifyClient.get<Order>(
+      const order = await this.shopifyClient.get(
         `/orders/${orderId}.json`
       );
+      console.log(order, "order")
       if (!order) {
         throw new ResourceNotFoundError(`Order with ID ${orderId}`);
       }
@@ -65,5 +72,3 @@ export class OrdersService {
     }
   }
 }
-
-

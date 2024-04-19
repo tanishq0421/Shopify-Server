@@ -3,7 +3,7 @@ import {order} from "./../controllers/orderController";
 
 const orderRouter = Router();
 
-orderRouter.get('/list', order.getAllOrders)
+orderRouter.get('/list/:phoneNumber', order.getAllOrders)
 orderRouter.get('/:orderId', order.getOrderById)
 orderRouter
 

@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import { ShopifyClient } from "./services/apiServices";
 import { OrdersService } from "./services/ordersService";
 import { CustomerService } from "./services/customerService";
+import { CustomerController } from "./controllers/customerController";
 
 const app = express();
 
@@ -17,9 +18,6 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-export const shopify = new ShopifyClient(`${process.env.SHOPIFY_APP_NAME}`, `${process.env.SHOPIFY_APP_ACCESS_TOKEN}`);
-export const orderService = new OrdersService(shopify);
-export const customerServices = new CustomerService(shopify);
 
 app.get("/", (req, res) => {
   res.status(200).json({ status: "Ok" });

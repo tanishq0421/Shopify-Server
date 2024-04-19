@@ -6,36 +6,34 @@ import { ResourceNotFoundError } from "../errorhandler/resourceNotFound.errorhan
 import { ApplicationError } from "../errorhandler/application.errorhandler";
 import { InvalidEntityError } from "./../errorhandler/invalidEntityErrorHandler";
 import { Customer } from "./../types/customer.types";
-import { shopify } from "./../server";
+
 export class CustomerController {
   private readonly customerService: CustomerService;
 
-  constructor(customerService: CustomerService) {
-    this.customerService = customerService;
+  constructor() {
+    this.customerService = new CustomerService();
+    this.getCustomerAddressList = this.getCustomerAddressList.bind(this);
+    this.updateCustomerAddress = this.updateCustomerAddress.bind(this);
   }
 
   async getCustomerAddressList(req: Request, res: Response) {
     const phoneNumber: string = req.params.phoneNumber;
-    console.log("hey");
     if (!phoneNumber) {
       return res
         .status(400)
         .json({ error: "Phone Number is required in the request body" });
     }
-
     try {
       const customers = await this.customerService.getAllCustomers();
       if (!customers || customers.length === 0) {
         throw new ResourceNotFoundError("Customers not found");
       }
-
       const customerIds: number[] = [];
       customers.forEach((customer) => {
         if (customer.phone === phoneNumber) {
           customerIds.push(customer.id);
         }
       });
-
       const addressesPromises = customerIds.map(async (customerId) => {
         const addresses = await this.customerService.getAddressForCustomer(
           customerId
@@ -80,8 +78,7 @@ export class CustomerController {
     }
 
     try {
-      const customers: Customer[] | null =
-        await this.customerService.getAllCustomers();
+      const customers = await this.customerService.getAllCustomers();
       if (!customers) {
         throw new EntityNotFoundError("Customers");
       }
@@ -134,5 +131,4 @@ export class CustomerController {
   }
 }
 
-const customerServices = new CustomerService(shopify);
-export const customer = new CustomerController(customerServices);
+export const customer = new CustomerController();
