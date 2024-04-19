@@ -5,17 +5,20 @@ import { ResourceNotFoundError } from "../errorhandler/resourceNotFound.errorhan
 import { ApplicationError } from "../errorhandler/application.errorhandler";
 import { InvalidEntityError } from "../errorhandler/invalidEntityErrorHandler";
 import { Order } from "./../types/order.types";
-import { orderService } from "./../server"; 
 export class OrderController {
   private readonly orderService: OrdersService;
 
-  constructor(orderService: OrdersService) {
-    this.orderService = orderService;
+  constructor() {
+    this.orderService = new OrdersService();
+    this.getAllOrders = this.getAllOrders.bind(this);
+    this.getOrderById = this.getOrderById.bind(this);
+    this.cancelOrder = this.cancelOrder.bind(this);
   }
 
   async getAllOrders(req: Request, res: Response) {
     try {
-      const phoneNumber: string | undefined = req.query.phoneNumber?.toString();
+      const phoneNumber: string | undefined =
+        req.params.phoneNumber?.toString();
 
       if (!phoneNumber) {
         return res.status(400).json({ error: "Phone number is required" });
@@ -31,13 +34,9 @@ export class OrderController {
         (order) => order.phone === phoneNumber
       );
 
-      if (filteredOrders.length === 0) {
-        throw new ResourceNotFoundError(
-          "No orders found for the provided phone number"
-        );
-      }
-
-      res.status(200).json(filteredOrders);
+      filteredOrders.length > 0 
+        ? res.status(200).json(filteredOrders)
+        : res.json("No orders found for the provided phone number");
     } catch (error: any) {
       console.error("Error fetching orders:", error.message);
 
@@ -105,4 +104,4 @@ export class OrderController {
   }
 }
 
-export const order = new OrderController(orderService);
+export const order = new OrderController();
