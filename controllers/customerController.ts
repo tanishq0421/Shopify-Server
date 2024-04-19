@@ -72,7 +72,6 @@ export class CustomerController {
   async updateCustomerAddress(req: Request, res: Response) {
     const addressId: number = parseInt(req.params.addressId);
     const updatedAddress: Address = req.body;
-
     if (isNaN(addressId) || addressId <= 0) {
       return res.status(400).json({ error: "Invalid Address ID" });
     }
@@ -91,7 +90,6 @@ export class CustomerController {
           }
         });
       });
-
       if (customerIds.length === 0) {
         throw new EntityNotFoundError(
           `No customers found with address ID ${addressId}`
