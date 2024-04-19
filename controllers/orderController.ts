@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import { ShopifyOrdersService } from "../services/ordersService";
+import { OrdersService } from "../services/ordersService";
 import { EntityNotFoundError } from "../errorhandler/entityNotFound.errorhandler";
 import { ResourceNotFoundError } from "../errorhandler/resourceNotFound.errorhandler";
 import { ApplicationError } from "../errorhandler/application.errorhandler";
 import { InvalidEntityError } from "../errorhandler/invalidEntityErrorHandler";
-import { Order } from "types/order.types";
-
+import { Order } from "./../types/order.types";
+import { orderService } from "./../server"; 
 export class OrderController {
-  private readonly orderService: ShopifyOrdersService;
+  private readonly orderService: OrdersService;
 
-  constructor(orderService: ShopifyOrdersService) {
+  constructor(orderService: OrdersService) {
     this.orderService = orderService;
   }
 
@@ -104,3 +104,5 @@ export class OrderController {
     }
   }
 }
+
+export const order = new OrderController(orderService);

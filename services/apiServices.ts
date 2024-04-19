@@ -16,7 +16,7 @@ export class ShopifyClient {
     }
 
     this.client = axios.create({
-      baseURL: `https://${shop}/admin/api/2022-01`,
+      baseURL: `https://${shop}/admin/api/2023-10`,
       headers: {
         "X-Shopify-Access-Token": accessToken,
         "Content-Type": "application/json",
@@ -78,3 +78,4 @@ export class ShopifyClient {
     return this.handleRequest<T>(this.client.delete<T>(path, { params }));
   }
 }
+

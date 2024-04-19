@@ -9,5 +9,5 @@
     "strict": true
   },
   "include": ["./**/*.ts"],
-  "exclude": ["node_modules", "package-lock.json"]
+  "exclude": ["node_modules", "package-lock.json", ".env"]
 }
