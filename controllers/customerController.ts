@@ -5,8 +5,8 @@ import { EntityNotFoundError } from "../errorhandler/entityNotFound.errorhandler
 import { ResourceNotFoundError } from "../errorhandler/resourceNotFound.errorhandler";
 import { ApplicationError } from "../errorhandler/application.errorhandler";
 import { InvalidEntityError } from "./../errorhandler/invalidEntityErrorHandler";
-import { Customer } from "types/customer.types";
-
+import { Customer } from "./../types/customer.types";
+import { shopify } from "./../server";
 export class CustomerController {
   private readonly customerService: CustomerService;
 
@@ -16,7 +16,7 @@ export class CustomerController {
 
   async getCustomerAddressList(req: Request, res: Response) {
     const phoneNumber: string = req.params.phoneNumber;
-
+    console.log("hey");
     if (!phoneNumber) {
       return res
         .status(400)
@@ -133,3 +133,6 @@ export class CustomerController {
     }
   }
 }
+
+const customerServices = new CustomerService(shopify);
+export const customer = new CustomerController(customerServices);

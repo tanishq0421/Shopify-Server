@@ -3,8 +3,7 @@ import { Customer } from './../types/customer.types';
 import { Address } from './../types/customerAddress.types';
 import { ResourceNotFoundError } from './../errorhandler/resourceNotFound.errorhandler';
 import { InvalidEntityError } from './../errorhandler/invalidEntityErrorHandler';
-import { ShopifyAPIError } from 'errorhandler/shopifyAPI.errorhandler';
-import { Order } from 'types/order.types';
+import { ShopifyAPIError } from './../errorhandler/shopifyAPI.errorhandler';
 
 export class CustomerService {
   private readonly shopifyClient: ShopifyClient;
@@ -80,3 +79,4 @@ export class CustomerService {
     }
   }
 }
+

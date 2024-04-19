@@ -2,9 +2,9 @@ import { ShopifyClient } from "./apiServices";
 import { Order } from "types/order.types";
 import { ResourceNotFoundError } from "./../errorhandler/resourceNotFound.errorhandler";
 import { InvalidEntityError } from "./../errorhandler/invalidEntityErrorHandler";
-import { ShopifyAPIError } from "errorhandler/shopifyAPI.errorhandler";
+import { ShopifyAPIError } from "./../errorhandler/shopifyAPI.errorhandler";
 
-export class ShopifyOrdersService {
+export class OrdersService {
   private readonly shopifyClient: ShopifyClient;
 
   constructor(shopifyClient: ShopifyClient) {
@@ -65,3 +65,5 @@ export class ShopifyOrdersService {
     }
   }
 }
+
+
