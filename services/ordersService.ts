@@ -20,7 +20,6 @@ export class OrdersService {
         "/orders.json?status=any"
       );
       const orders = response.orders;
-      console.log(orders)
       if (!orders) {
         throw new ResourceNotFoundError("Orders");
       }
