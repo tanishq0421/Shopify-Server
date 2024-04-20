@@ -19,13 +19,13 @@ export class OrderController {
     try {
       const phoneNumber: string | undefined =
         req.params.phoneNumber?.toString();
-
+      console.log(phoneNumber)
       if (!phoneNumber) {
         return res.status(400).json({ error: "Phone number is required" });
       }
 
       const orders: Order[] | null = await this.orderService.getAllOrders();
-
+      console.log(orders)
       if (!orders || orders.length === 0) {
         throw new ResourceNotFoundError("No orders found");
       }
