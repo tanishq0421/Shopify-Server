@@ -1,14 +1,16 @@
-# Hooman Labs Assignment
+# Shopify-Server
 
-Hooman Labs Assignment is a Node.js application written in TypeScript, designed to manage the stores of your Shopify account.
+Shopify-Server is a Node.js application written in TypeScript, designed to manage the stores of your Shopify account.
 
 ## Cloning the Repository
 
 To clone the repository, use the following command:
 
 ```shell
-    git clone https://github.com/tanishq0421/hooman_labs_assignment.git
+    git clone https://github.com/tanishq0421/Shopify-Server.git
 ```
+
+After Cloning the repo setup your .env file by copying the.env.example in .env and add your shopify credentials to it.
 
 ## Running the Application with Docker
 
@@ -59,9 +61,11 @@ To set up the development environment and run the application locally without Do
 ```shell
    yarn dev
 ```
+
 This command will start the server using nodemon, which automatically restarts the server when changes are detected.
 
 5. Access the application by navigating to http://localhost:8000 in your web browser.
 
 ## License
+
 This project is licensed under the MIT License.
