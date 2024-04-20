@@ -17,7 +17,7 @@ export class OrdersService {
   async getAllOrders(): Promise<Order[] | null> {
     try {
       const response = await this.shopifyClient.get<{ orders: Order[] }>(
-        "/orders.json"
+        "/orders.json?status=any"
       );
       const orders = response.orders;
       if (!orders) {
